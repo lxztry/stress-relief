@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中年解压站 - 工作生活平衡指南</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 50%, #2d1f3d 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(180deg, rgba(34,197,94,0.1) 0%, transparent 100%);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #22c55e, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .subtitle { font-size: 1.2rem; color: #94a3b8; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin: 60px 0 35px;
+        }
+        
+        .stress-meter {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .meter {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #22c55e 0deg,
+                #eab308 90deg,
+                #ef4444 180deg,
+                #ef4444 270deg
+            );
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .meter-inner {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: #1a1a2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .meter-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #22c55e;
+        }
+        .meter-label { color: #888; font-size: 0.9rem; }
+        
+        .slider-container {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .slider-container input {
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 35px 0;
+        }
+        .category-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        .category-card .icon { font-size: 3rem; margin-bottom: 15px; }
+        .category-card h3 { margin-bottom: 12px; }
+        .category-card p { color: #94a3b8; line-height: 1.6; }
+        
+        .exercises {
+            background: rgba(255,255,255,0.03);
+            border-radius: 24px;
+            padding: 35px;
+            margin: 50px 0;
+        }
+        .exercise-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        .exercise-item:last-child { margin-bottom: 0; }
+        .exercise-item .num {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+            min-width: 60px;
+        }
+        .exercise-item h4 { margin-bottom: 8px; }
+        .exercise-item p { color: #94a3b8; font-size: 0.95rem; }
+        .exercise-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+        .exercise-btn:hover { transform: scale(1.05); }
+        
+        .timer-section {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(59,130,246,0.1));
+            border-radius: 24px;
+            margin: 50px 0;
+        }
+        .timer-display {
+            font-size: 5rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin: 30px 0;
+            color: #22c55e;
+        }
+        .timer-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .timer-btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .timer-btn.primary {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .timer-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .timer-btn:hover { transform: scale(1.05); }
+        
+        .quotes {
+            background: rgba(255,255,255,0.03);
+            border-radius: 24px;
+            padding: 35px;
+            margin: 50px 0;
+        }
+        .quote-item {
+            text-align: center;
+            padding: 30px;
+        }
+        .quote-item .text {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .quote-item .author { color: #888; }
+        
+        .habits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 35px 0;
+        }
+        .habit-card {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .habit-card .check {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .habit-card .check:hover { background: rgba(59,130,246,0.2); }
+        .habit-card.done .check {
+            background: #22c55e;
+            border-color: #22c55e;
+        }
+        .habit-card.done .check::after {
+            content: '✓';
+            color: white;
+        }
+        .habit-card h4 { margin-bottom: 5px; }
+        .habit-card p { font-size: 0.9rem; color: #888; }
+        
+        .music-section {
+            background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(59,130,246,0.2));
+            border-radius: 24px;
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+        }
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .music-btn {
+            padding: 20px 30px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .music-btn.play {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: white;
+            width: 80px;
+            height: 80px;
+        }
+        .music-btn.ambient {
+            background: rgba(255,255,255,0.1);
+            font-size: 1rem;
+            padding: 15px 25px;
+            border-radius: 20px;
+            color: white;
+        }
+        .music-btn:hover { transform: scale(1.1); }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 60px;
+        }
+        footer a { color: #22c55e; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1>🧘 中年解压站</h1>
+        <p class="subtitle">工作生活的压力，我们一起面对</p>
+    </section>
+    
+    <div class="container">
+        <div class="stress-meter">
+            <h2>今日压力指数</h2>
+            <div class="meter">
+                <div class="meter-inner">
+                    <span class="meter-value" id="stressValue">5</span>
+                    <span class="meter-label">/ 10</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="1" max="10" value="5" id="stressSlider" oninput="updateStress(this.value)">
+            </div>
+            <p style="color:#888;margin-top:15px;">拖动滑块记录今天的压力程度</p>
+        </div>
+        
+        <h2 class="section-title">快速解压</h2>
+        <div class="categories">
+            <div class="category-card" onclick="showExercise('breathing')">
+                <div class="icon">🫁</div>
+                <h3>呼吸放松</h3>
+                <p>深呼吸是最简单有效的放松方法。跟着节奏练习，缓解紧张情绪。</p>
+            </div>
+            <div class="category-card" onclick="showExercise('stretch')">
+                <div class="icon">🧘</div>
+                <h3>办公室拉伸</h3>
+                <p>久坐办公，简单的拉伸动作可以缓解肩颈酸痛。</p>
+            </div>
+            <div class="category-card" onclick="showExercise('mind')">
+                <div class="icon">🧠</div>
+                <h3>冥想休息</h3>
+                <p>每天10分钟冥想，让大脑得到彻底休息。</p>
+            </div>
+            <div class="category-card" onclick="showExercise('walk')">
+                <div class="icon">🚶</div>
+                <h3>短暂散步</h3>
+                <p>离开工位，短暂的户外散步可以大幅改善心情。</p>
+            </div>
+        </div>
+        
+        <h2 class="section-title">5分钟放松练习</h2>
+        <div class="exercises">
+            <div class="exercise-item">
+                <span class="num">1</span>
+                <div>
+                    <h4>4-7-8 呼吸法</h4>
+                    <p>吸气4秒 → 屏息7秒 → 呼气8秒，重复3次</p>
+                </div>
+                <button class="exercise-btn" onclick="startBreathing()">开始</button>
+            </div>
+            <div class="exercise-item">
+                <span class="num">2</span>
+                <div>
+                    <h4>肩颈放松</h4>
+                    <p>耸肩上提保持5秒 → 放松 → 肩部下沉保持5秒</p>
+                </div>
+                <button class="exercise-btn" onclick="startStretch()">开始</button>
+            </div>
+            <div class="exercise-item">
+                <span class="num">3</span>
+                <div>
+                    <h4>颈部旋转</h4>
+                    <p>缓慢转头画圈，顺时针5圈，逆时针5圈</p>
+                </div>
+                <button class="exercise-btn" onclick="startNeck()">开始</button>
+            </div>
+            <div class="exercise-item">
+                <span class="num">4</span>
+                <div>
+                    <h4>冥想引导</h4>
+                    <p>闭眼，专注呼吸，清空杂念，持续5分钟</p>
+                </div>
+                <button class="exercise-btn" onclick="startMeditation()">开始</button>
+            </div>
+        </div>
+        
+        <h2 class="section-title">定时休息</h2>
+        <div class="timer-section">
+            <h3>番茄工作法</h3>
+            <p style="color:#888;margin:15px 0;">工作25分钟，休息5分钟</p>
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="timer-controls">
+                <button class="timer-btn primary" onclick="toggleTimer()">开始</button>
+                <button class="timer-btn secondary" onclick="resetTimer()">重置</button>
+            </div>
+        </div>
+        
+        <h2 class="section-title">每日好习惯</h2>
+        <div class="habits">
+            <div class="habit-card" onclick="toggleHabit(this)">
+                <div class="check"></div>
+                <div>
+                    <h4>早起10分钟冥想</h4>
+                    <p>开启平静的一天</p>
+                </div>
+            </div>
+            <div class="habit-card" onclick="toggleHabit(this)">
+                <div class="check"></div>
+                <div>
+                    <h4>午餐后散步15分钟</h4>
+                    <p>助消化，减压力</p>
+                </div>
+            </div>
+            <div class="habit-card" onclick="toggleHabit(this)">
+                <div class="check"></div>
+                <div>
+                    <h4>下班前整理办公桌</h4>
+                    <p>清清爽爽回家</p>
+                </div>
+            </div>
+            <div class="habit-card" onclick="toggleHabit(this)">
+                <div class="check"></div>
+                <div>
+                    <h4>睡前1小时不看手机</h4>
+                    <p>提高睡眠质量</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">舒缓音乐</h2>
+        <div class="music-section">
+            <h3>🎵 放松音乐</h3>
+            <p style="color:#888;margin:20px 0;">点击播放，轻柔的背景音乐帮助放松</p>
+            <div class="music-controls">
+                <button class="music-btn play" onclick="toggleMusic()">▶</button>
+                <button class="music-btn ambient" onclick="playAmbient('rain')">🌧️ 雨声</button>
+                <button class="music-btn ambient" onclick="playAmbient('forest')">🌲 森林</button>
+                <button class="music-btn ambient" onclick="playAmbient('waves')">🌊 海浪</button>
+            </div>
+        </div>
+        
+        <h2 class="section-title">励志语录</h2>
+        <div class="quotes">
+            <div class="quote-item">
+                <p class="text">"生活不是等待风暴过去，而是学会在雨中起舞。"</p>
+                <p class="author">—— 维维安·格林</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>中年解压站 · 照顾好自己才能照顾家人</p>
+        <p>© 2026 | <a href="https://github.com/lxztry">访问开发者</a></p>
+    </footer>
+    
+    <script>
+        // Stress meter
+        function updateStress(val) {
+            document.getElementById('stressValue').textContent = val;
+            const colors = ['#22c55e', '#84cc16', '#eab308', '#f97316', '#ef4444'];
+            document.getElementById('stressValue').style.color = colors[val - 1];
+        }
+        
+        // Timer
+        let timerRunning = false;
+        let timerSeconds = 25 * 60;
+        let timerInterval;
+        
+        function toggleTimer() {
+            timerRunning = !timerRunning;
+            const btn = document.querySelector('.timer-btn.primary');
+            btn.textContent = timerRunning ? '暂停' : '开始';
+            
+            if (timerRunning) {
+                timerInterval = setInterval(() => {
+                    timerSeconds--;
+                    if (timerSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        alert('时间到！休息一下吧');
+                        resetTimer();
+                    }
+                    updateTimerDisplay();
+                }, 1000);
+            } else {
+                clearInterval(timerInterval);
+            }
+        }
+        
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            timerSeconds = 25 * 60;
+            document.querySelector('.timer-btn.primary').textContent = '开始';
+            updateTimerDisplay();
+        }
+        
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Habits
+        function toggleHabit(el) {
+            el.classList.toggle('done');
+        }
+        
+        // Music
+        let isPlaying = false;
+        function toggleMusic() {
+            isPlaying = !isPlaying;
+            const btn = document.querySelector('.music-btn.play');
+            btn.textContent = isPlaying ? '⏸' : '▶';
+        }
+        
+        function playAmbient(type) {
+            alert('🎵 播放 ' + type + ' 环境音\n\n(需要音频素材支持)');
+        }
+        
+        // Exercises
+        function showExercise(type) {
+            const messages = {
+                breathing: '🫁 4-7-8 呼吸法:\n\n1. 用鼻子吸气4秒\n2. 屏住呼吸7秒\n3. 用嘴呼气8秒\n4. 重复3次',
+                stretch: '🧘 办公室拉伸:\n\n1. 耸肩向上，保持5秒\n2. 放松，自然下沉\n3. 重复5次',
+                mind: '🧠 冥想:\n\n1. 找一个舒适的位置\n2. 闭眼，专注呼吸\n3. 如有杂念，轻轻拉回\n4. 持续5分钟',
+                walk: '🚶 散步:\n\n1. 站起来，走出办公室\n2. 看看窗外，远眺放松\n3. 慢慢走动5分钟'
+            };
+            alert(messages[type] || '开始练习');
+        }
+        
+        function startBreathing() {
+            alert('🫁 开始4-7-8呼吸法\n\n吸气...4...3...2...1\n屏息...7...6...5...4...3...2...1\n呼气...8...');
+        }
+        
+        function startStretch() { alert('🧘 开始肩颈放松练习'); }
+        function startNeck() { alert('🔄 开始颈部旋转练习'); }
+        function startMeditation() { alert('🧘 开始5分钟冥想'); }
+    </script>
+</body>
+</html>
